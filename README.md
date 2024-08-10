@@ -1,17 +1,17 @@
-# DBT Demo
+# Hello DBT
 
 ## Overview
 
-This is a reference implementation of using DBT [(documentation)](https://docs.getdbt.com/) to:
+This is a reference implementation of using DBT [(documentation)](https://docs.getdbt.com/) demonstrating how to:
 
 * Enrich data for consumption with best practice opinions
   * only write select statements
     * no DDL needed
     * No insert / update / merge / delete needed
-* Testing sql enrichment is a first class object
+* Testing sql enrichment as a first class object
   * Schema tests
   * business logic tests
-* simplified process to:
+* Simplified process to:
   * seed data
   * slowly changing dimensions
 
