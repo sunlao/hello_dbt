@@ -1,0 +1,11 @@
+anybadge
+bandit
+black
+coverage
+coverage-badge
+httpx
+pylint
+pycodestyle
+pytest
+safety
+tox

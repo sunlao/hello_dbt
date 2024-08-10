@@ -1,0 +1,53 @@
+services:
+
+  db-deploy:
+    build:
+      context: .
+      dockerfile: ./deploy/db-deploy/Dockerfile
+    image: ${APP_CODE}-db-deploy:latest
+    platform: linux/amd64
+    container_name: "${APP_CODE}-db-deploy"
+    environment:
+      - APP_CODE=${APP_CODE}
+      - ENV=${ENV}
+      - DB_CONTAINER_PORT=${DB_CONTAINER_PORT}
+      - DB_ADMIN_PWD=${DB_ADMIN_PWD}
+      - DB_DATA_PWD=${DB_DATA_PWD}
+      - DB_APP_PWD=${DB_APP_PWD}
+      - TZ=GMT
+    depends_on:
+      - postgres
+    networks:
+      - "${APP_CODE}net"
+
+  dbt_runtime:
+    image: dbt_runtime    
+    container_name: dbt_runtime
+    ports:
+      - "8001:8001"
+    build:
+      context: .
+      dockerfile: ./deploy/dbt-runtime/Dockerfile
+      args:
+        - DBT_PWD=${DB_ADMIN_PWD}
+    depends_on:
+      - postgres
+    networks:
+      - "${APP_CODE}net"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: "${APP_CODE}-postgres"
+    ports:
+      - "${DB_HOST_PORT}:${DB_CONTAINER_PORT}"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_ADMIN_USER}
+      - POSTGRES_PASSWORD=${DB_ADMIN_PWD}
+      - TZ=GMT
+    networks:
+      - "${APP_CODE}net"
+
+#hardcode networknames here
+networks:
+  hdbtnet:

@@ -1,0 +1,12 @@
+dbt_demo:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: hdbt-postgres
+      user: hdbt_admin
+      password: DBT_SECRET
+      port: 5432
+      dbname: db_hdbt
+      schema: hdbt
+      threads: 4
