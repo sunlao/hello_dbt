@@ -71,9 +71,13 @@ With this we can see the execution framework for DBT models and tests demonstrat
 
 From project root execute:
 
+Start a postgres db container, a db-deploy container that will configure postgres, and a dbt runtime container.
+
 ```SHELL
 make up
 ```
+
+Test Database with repo helpers.
 
 ```SHELL
 tox
