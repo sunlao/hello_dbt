@@ -42,14 +42,14 @@ Note: we do not store passwords in repos so `.env` files are in the `.gitignore`
 
 ### Summary
 
-This repo has already been initialized for DBT. This was done manually in the `\src` folder with the command: `dbt init dbt_demo`. This creates a dbt project called dbt_demo and all the file structures in `src/dbt_demo`.  In addition the following was manually added / modified.
+This repo has already been initialized for DBT. This was done manually in the `\src` folder with the command: `dbt init hello`. This creates a dbt project called `hello` and all the file structures in `src/hello`.  In addition the following was manually added / modified.
 
 * `deploy/dbt-runtime/profiles.yml` is copied to to the containers users' `.dbt` folder to provide dbt connection to postgres.
-* `src/dbt_demo/dbt_project.yml` has been modified post init, with minimalist opinions for SSP and the demo.
-* Seed data added for DBT demo data can be found in `src/dbt_demo/data`
-* yaml file for seed schema tests in `src/dbt_demo/models/working`
-* yaml file for model schema tests in `src/dbt_demo/models/consumption`
-* two simple select statements in `src/dbt_demo/tests/consumption` for data tests
+* `src/hello/dbt_project.yml` has been modified post init, with minimalist opinions for SSP and the demo.
+* Seed data added for DBT demo data can be found in `src/hello/data`
+* yaml file for seed schema tests in `src/hello/models/working`
+* yaml file for model schema tests in `src/hello/models/consumption`
+* two simple select statements in `src/hello/tests/consumption` for data tests
 
 This demo will do the following:
 
@@ -85,7 +85,7 @@ tox
 From project root, assert DBT in dbt_runtime container and get DBT setup information:
 
 ```SHELL
-docker exec -ti dbt_runtime sh -c "cd /src/dbt_demo && dbt debug"
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt debug"
 ```
 
 * `profiles.yml` file [OK found and valid]

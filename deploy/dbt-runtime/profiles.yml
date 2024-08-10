@@ -1,4 +1,4 @@
-dbt_demo:
+hello:
   target: dev
   outputs:
     dev:
