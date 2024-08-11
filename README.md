@@ -96,6 +96,9 @@ tox
 
 * Assert Postgres database
 * Assert Postgres dbt schemas exist
+* NOTE: the app user:
+  * can connect to postgres - `select "postgres";`
+  * does not have permissions select from table in consumption schema. (or any table)
 
 From project root, assert DBT in dbt_runtime container and get DBT setup information:
 
@@ -247,7 +250,7 @@ from
 snapshots.customer_snapshot;
 ```
 
-You will see the a snapshot of `raw_customers.csv` with columns - dbt_updated_at, dbt_valid_from and dbt_valid_to.
+You will see in the new schema a snapshot of `raw_customers.csv` with columns - dbt_updated_at, dbt_valid_from and dbt_valid_to.
 
 Change some value in raw_customers.csv, and copy file to docker container with executing following:
 
@@ -266,3 +269,50 @@ snapshots.customer_snapshot;
 ```
 
 You will see the updated data in the snapshot table.
+
+### Posthook and Macro
+
+We already added a posthook for model `consumption` in `dbt_project.yml`:
+
+```SHELL
+models:
+  stage:
+  raw:
+  working:
+  consumption:
+    +post-hook: "{{ grant_select_on_schemas(['consumption'], 'hdbt_app') }}"
+```
+
+You will now see all consumption data as hdbt_app.
+
+### Documentation
+
+DBT self documenting feature shows a graph of all the data associated elements how the entities relate to each other.
+
+There are lots of ways to use DBT docs. Below you can
+
+* generate docs
+* copy necessary files to host machine
+* modify index
+
+#### Generate
+
+```bash
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt docs generate"
+```
+
+#### Copy
+
+```bash
+for f in $(docker exec -it dbt_runtime sh -c "ls src/hello/target/*.json" | tr -d '\r') ; do docker cp dbt_runtime:${f} ./docs; done
+for f in $(docker exec -it dbt_runtime sh -c "ls src/hello/target/*.html" | tr -d '\r') ; do docker cp dbt_runtime:${f} ./docs; done
+docker cp dbt_runtime:/src/hello/target/graph.gpickle ./docs/graph.gpickle 
+```
+
+#### Index
+
+```bash
+python merge_index.py
+```
+
+open full path to `.docs/index.html' in browser

@@ -122,3 +122,9 @@ job-output.txt
 .dev
 tests/.coveragesource
 scratchpad
+
+# dbt files
+docs/*.json
+docs/*.html
+docs/*.yml
+docs/*.gpickle

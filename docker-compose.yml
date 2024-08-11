@@ -23,8 +23,6 @@ services:
   dbt_runtime:
     image: dbt_runtime    
     container_name: dbt_runtime
-    ports:
-      - "8001:8001"
     build:
       context: .
       dockerfile: ./deploy/dbt-runtime/Dockerfile
