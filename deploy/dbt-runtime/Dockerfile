@@ -39,5 +39,7 @@ RUN chown -R app:app /src
 # change to the app user
 USER app
 
+RUN cd /src/hello && dbt parse
+
 # run entrypoint.sh
 ENTRYPOINT ["/src/entrypoint.sh"]

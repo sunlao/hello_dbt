@@ -33,4 +33,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 seeds:
   hello:
     +schema: raw
+    raw_customers_delete:
+      +column_types:
+        id: int
+        first_name: text
+        last_name:  text
+    raw_customers_new:
+      +column_types:
+        id: int
+        first_name: text
+        last_name:  text
+    raw_customers_update:
+      +column_types:
+        id: int
+        first_name: text
+        last_name:  text
       

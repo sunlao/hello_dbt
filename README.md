@@ -184,3 +184,85 @@ hd_consumption.order_summary;
 ```SHELL
 docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt run"
 ```
+
+Re-Execute SQL above from "Show tables exist"
+
+* Show schema tests
+  * `src/hello/models/working/schema.yml`
+  * `src/hello/models/consumption/schema.yml`
+* Show data tests
+  * `src/hello/tests/consumption`
+
+```SHELL
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt test"
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt test --models order_summary"
+```
+
+### Incremental Model Scenarios
+
+copy files representing new streams of data
+
+Show types of updates:
+
+```bash
+docker cp demo_data/raw_customers_delete.csv dbt_runtime:/src/hello/seeds/raw_customers_delete.csv
+docker cp demo_data/raw_customers_new.csv dbt_runtime:/src/hello/seeds/raw_customers_new.csv
+docker cp demo_data/raw_customers_update.csv dbt_runtime:/src/hello/seeds/raw_customers_update.csv
+```
+
+***Note simultaneous update and delete which could happen***
+
+```bash
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt seed"
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt run"
+```
+
+Execute in favorite SQL editor with admin account for postgres:
+
+```SQL
+select *
+from
+consumption.customer_summary;
+```
+
+You will see the updated data in the consumption table
+You will see deleted data in the consumption table
+
+***note audit columns***
+
+### Snapshot
+
+If you want to keep track of the historical data, execute in the root folder:
+
+```bash
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt seed"
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt snapshot"
+```
+
+Execute in favorite SQL editor with admin account for postgres:
+
+```SQL
+select *
+from
+snapshots.customer_snapshot;
+```
+
+You will see the a snapshot of `raw_customers.csv` with columns - dbt_updated_at, dbt_valid_from and dbt_valid_to.
+
+Change some value in raw_customers.csv, and copy file to docker container with executing following:
+
+```bash
+docker cp ./src/hello/seeds/raw_customers.csv dbt_runtime:/src/hello/seeds/raw_customers.csv
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt seed"
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt snapshot"
+```
+
+Re-execute in favorite SQL editor with admin account for postgres:
+
+```SQL
+select *
+from
+snapshots.customer_snapshot;
+```
+
+You will see the updated data in the snapshot table.
