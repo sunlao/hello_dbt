@@ -1,5 +1,5 @@
 -- TABLES
-create table consumption.hello_world (
+create table hd_consumption.hello_world (
 	col1 varchar null,
 	col2 int4 null
 );

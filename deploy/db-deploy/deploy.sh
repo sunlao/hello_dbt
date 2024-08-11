@@ -2,7 +2,7 @@
 
 function init_database {
     # Create schemas
-    SCHEMAS=("raw" "stage" "working" "consumption")
+    
     for SCHEMA in "${SCHEMAS[@]}"
     do
         PGPASSWORD=$DB_ADMIN_PWD psql -U $DB_ADMIN_USER -h $DB_HOST -d $DB_NAME -p $DB_CONTAINER_PORT \
@@ -16,7 +16,6 @@ function init_database {
     -c "CREATE USER $DB_APP_USER PASSWORD '$DB_APP_PWD';"
 
     # Grants / PRIVILEGES
-    SCHEMAS=("raw" "stage" "working" "consumption")
     for SCHEMA in "${SCHEMAS[@]}"
     do
         PGPASSWORD=$DB_ADMIN_PWD psql -U $DB_ADMIN_USER -h $DB_HOST -d $DB_NAME -p $DB_CONTAINER_PORT \
@@ -77,7 +76,8 @@ DB_DATA_USER="${APP_CODE}_data"
 DB_APP_USER="${APP_CODE}_app"
 DB_HOST="${APP_CODE}-postgres"
 DB_NAME="db_${APP_CODE}"
-APP_SCHEMA=consumption
+APP_SCHEMA=hd_consumption
+SCHEMAS=("hd_raw" "hd_stage" "hd_working" "hd_consumption")
 
 # use clean_database during development to reset flyway
 echo "- Init DB"

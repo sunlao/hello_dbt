@@ -8,5 +8,5 @@ hello:
       password: DBT_SECRET
       port: 5432
       dbname: db_hdbt
-      schema: hdbt
+      schema: hd
       threads: 4
