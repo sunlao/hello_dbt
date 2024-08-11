@@ -38,11 +38,22 @@ Locally this repo uses the following environment variables in a `.env`
 
 Note: we do not store passwords in repos so `.env` files are in the `.gitignore` file
 
+## Configuration files
+
+* `.gitignore` - a fine start to common things that should be ignored in a python repo
+* build.py - pythonic orchestration of the build via the make file
+* destroy.py - pythonic orchestration of the destroy via the make file
+* `docker-compose.yml` - containerized orchestration for MySQL & Postgres
+* `Makefile` - Build / destroy executor
+* `requirements.txt` - used to list python modules required for a repo
+* `tox.ini` - config file for Tox
+* `VERSION` - place to store the semantic version of the repo
+
 ## DEMO Script
 
 ### Summary
 
-This repo has already been initialized for DBT. This was done manually in the `\src` folder with the command: `dbt init hello`. This creates a dbt project called `hello` and all the file structures in `src/hello`.  In addition the following was manually added / modified.
+This repo has already been initialized for DBT. This was done manually in the `\src` folder with the command: `dbt init hello`. This creates a dbt project called `hello` and all the file structures in `src/hello`. `dbt parse` was also ran by the container entry point (see above documentation for more info). In addition the following was manually added / modified.
 
 * `deploy/dbt-runtime/profiles.yml` is copied to to the containers users' `.dbt` folder to provide dbt connection to postgres.
 * `src/hello/dbt_project.yml` has been modified post init, with minimalist opinions for SSP and the demo.
@@ -97,3 +108,79 @@ docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt debug"
 * Required dependencies:
   * git [OK found]
 * Connection test: OK connection ok
+
+Show no raw tables exist:
+
+Execute in favorite SQL editor with admin account for Postgres:
+
+```SQL
+select count(*)
+from
+hd_raw.raw_customers;
+
+select count(*)
+from
+hd_raw.raw_customers_delete;
+
+select count(*)
+from
+hd_raw.raw_customers_new;
+
+select count(*)
+from
+hd_raw.raw_customers_update;
+
+select count(*)
+from
+hd_raw.raw_orders;
+
+select count(*)
+from
+hd_raw.raw_payments;
+```
+
+Show seed files in `src/hello/data`
+
+Execute in root folder to load seed objects:
+
+```SHELL
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt seed"
+```
+
+Re-Execute SQL above from "Show no raw tables exist"
+
+Execute in favorite SQL editor with admin account for postgres:
+
+```SQL
+select count(*)
+from
+hd_stage.customers_delete;
+
+select count(*)
+from
+hd_stage.customers_init;
+
+select count(*)
+from
+hd_stage.customers_new;
+
+select count(*)
+from
+hd_stage.customers_update;
+
+select count(*)
+from
+hd_working.customers;
+
+select count(*)
+from
+hd_consumption.customer_summary;
+
+select count(*)
+from
+hd_consumption.order_summary;
+```
+
+```SHELL
+docker exec -ti dbt_runtime sh -c "cd /src/hello && dbt run"
+```
