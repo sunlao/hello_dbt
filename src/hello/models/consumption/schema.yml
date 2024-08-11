@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: order_summary
+    columns:
+      - name: order_summary_pk
+        data_tests:
+          - unique
+          - not_null  
+      - name: order_id
+        data_tests:
+          - not_null
+      - name: order_date
+        data_tests:
+          - not_null    
+      - name: order_status
+        data_tests:
+          - not_null    
+      - name: first_name
+        data_tests:
+          - not_null
+      - name: last_name
+        data_tests:
+          - not_null      
+      - name: amount
+        data_tests:
+          - not_null      
+      - name: payment_method
+        data_tests:
+          - not_null
+
+  - name: customer_summary
+    data_tests:
+      - unique:
+          column_name: "(first_name||'~'||last_name)"  
+    columns:
+      - name: dwh_pk
+        data_tests:
+          - unique
+          - not_null
+      - name: source_id
+        data_tests:
+          - unique
+          - not_null                
+      - name: first_name
+        data_tests:
+          - not_null
+      - name: last_name
+        data_tests:
+          - not_null
+      - name: dwh_create_user
+        data_tests:
+          - not_null
+      - name: dwh_create_ts
+        data_tests:
+          - not_null                    
