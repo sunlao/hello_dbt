@@ -119,27 +119,27 @@ Execute in favorite SQL editor with admin account for Postgres:
 ```SQL
 select count(*)
 from
-hd_raw.raw_customers;
+raw.raw_customers;
 
 select count(*)
 from
-hd_raw.raw_customers_delete;
+raw.raw_customers_delete;
 
 select count(*)
 from
-hd_raw.raw_customers_new;
+raw.raw_customers_new;
 
 select count(*)
 from
-hd_raw.raw_customers_update;
+raw.raw_customers_update;
 
 select count(*)
 from
-hd_raw.raw_orders;
+raw.raw_orders;
 
 select count(*)
 from
-hd_raw.raw_payments;
+raw.raw_payments;
 ```
 
 Show seed files in `src/hello/data`
@@ -157,31 +157,31 @@ Execute in favorite SQL editor with admin account for postgres:
 ```SQL
 select count(*)
 from
-hd_stage.customers_delete;
+stage.customers_delete;
 
 select count(*)
 from
-hd_stage.customers_init;
+stage.customers_init;
 
 select count(*)
 from
-hd_stage.customers_new;
+stage.customers_new;
 
 select count(*)
 from
-hd_stage.customers_update;
+stage.customers_update;
 
 select count(*)
 from
-hd_working.customers;
+working.customers;
 
 select count(*)
 from
-hd_consumption.customer_summary;
+consumption.customer_summary;
 
 select count(*)
 from
-hd_consumption.order_summary;
+consumption.order_summary;
 ```
 
 ```SHELL
